@@ -22,5 +22,12 @@
     "psr-4": {
       "tests\\": "tests/"
     }
+  },
+  "extra": {
+    "laravel": {
+      "providers": [
+        "XxlJob\\Providers\\XxlJobProvider"
+      ]
+    }
   }
 }
