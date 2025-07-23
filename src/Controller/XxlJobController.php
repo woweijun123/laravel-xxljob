@@ -15,39 +15,53 @@ class XxlJobController extends AbstractController
     {
     }
 
-    public function beat(Request $request): JsonResponse
+    /**
+     * 心跳检测
+     * @return JsonResponse
+     */
+    public function beat(): JsonResponse
     {
         $this->executor->beat();
         return $this->success();
     }
 
+    /**
+     * 忙碌检测
+     * @param JobIdRequest $request
+     * @return JsonResponse
+     */
     public function idleBeat(JobIdRequest $request): JsonResponse
     {
         return $this->success($this->executor->idleBeat($request->jobId));
     }
 
+    /**
+     * 触发任务
+     * @param RunRequest $request
+     * @return JsonResponse
+     */
     public function run(RunRequest $request): JsonResponse
     {
         return $this->success($this->executor->run($request));
     }
 
-    public function kill(Request $request): JsonResponse
+    /**
+     * 终止任务
+     * @param JobIdRequest $request
+     * @return JsonResponse
+     */
+    public function kill(JobIdRequest $request): JsonResponse
     {
-        return $this->success($this->executor->kill($this->safeGetJobId($request)));
-    }
-
-    public function log(LogRequest $request): JsonResponse
-    {
-        return $this->success($this->executor->log($request));
+        return $this->success($this->executor->kill($request->jobId));
     }
 
     /**
-     * 获取jobId
-     * @param Request $request
-     * @return int
+     * 查看执行日志
+     * @param LogRequest $request
+     * @return JsonResponse
      */
-    private function safeGetJobId(Request $request): int
+    public function log(LogRequest $request): JsonResponse
     {
-        return intval($request->input('jobId', 0));
+        return $this->success($this->executor->log($request));
     }
 }
