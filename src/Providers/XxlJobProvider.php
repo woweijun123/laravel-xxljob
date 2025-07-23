@@ -2,6 +2,7 @@
 
 namespace XxlJob\Providers;
 
+use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
 use Throwable;
 
@@ -20,5 +21,11 @@ class XxlJobProvider extends ServiceProvider
     public function boot(): void
     {
         $this->publishes([__DIR__ . '/../Config/xxl_job.php' => config_path('xxl_job.php')]);
+        // 自动加载路由文件
+        if (file_exists($routesFile = __DIR__ . '/../Route/xxl-job.php')) {
+            Route::group(['namespace' => 'XxlJob\Controller'], function () use ($routesFile) {
+                require $routesFile;
+            });
+        }
     }
 }
