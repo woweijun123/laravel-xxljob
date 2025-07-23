@@ -5,12 +5,19 @@ namespace XxlJob\Providers;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
 use Throwable;
+use XxlJob\Dispatch\DispatcherInterfaceImpl;
+use XxlJob\Dispatch\DispatcherInterface;
+use XxlJob\Executor\ExecutorInterfaceImpl;
+use XxlJob\Executor\ExecutorInterface;
 
 class XxlJobProvider extends ServiceProvider
 {
     public function register(): void
     {
         $this->mergeConfigFrom(__DIR__ . '/../Config/xxl_job.php', 'xxl_job');
+        // 绑定接口到实现类
+        $this->app->bindIf(ExecutorInterface::class, ExecutorInterfaceImpl::class);
+        $this->app->bindIf(DispatcherInterface::class, DispatcherInterfaceImpl::class);
     }
 
     /**

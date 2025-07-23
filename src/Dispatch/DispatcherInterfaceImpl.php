@@ -7,7 +7,7 @@ use GuzzleHttp\RequestOptions;
 use Illuminate\Database\Eloquent\Casts\Json;
 use Illuminate\Support\Facades\Log;
 
-class Dispatcher implements DispatcherInterface
+class DispatcherInterfaceImpl implements DispatcherInterface
 {
     const string HEADER = 'XXL-JOB-ACCESS-TOKEN';
 

@@ -6,7 +6,7 @@ use XxlJob\Requests\LogRequest;
 use XxlJob\Requests\RunRequest;
 use XxlJob\Responses\LogResponse;
 
-class DefaultExecutorInterfaceImpl implements ExecutorInterface
+class ExecutorInterfaceImpl implements ExecutorInterface
 {
     /**
      * 心跳检测
