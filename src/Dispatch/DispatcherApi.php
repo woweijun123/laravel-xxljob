@@ -10,7 +10,7 @@ use XxlJob\Api\BaseClient;
 class DispatcherApi extends BaseClient implements DispatcherApiInterface
 {
     protected array $configExt = [
-        'decode'      => false,          // 是否解析返回数据
+        'decode' => false,          // 是否解析返回数据
     ];
 
     /**
@@ -25,7 +25,7 @@ class DispatcherApi extends BaseClient implements DispatcherApiInterface
             '/api/registry',
             [
                 'registryGroup' => 'EXECUTOR',
-                'registryKey'   => $registryKey,
+                'registryKey' => $registryKey,
                 'registryValue' => $registryValue,
             ]
         );
