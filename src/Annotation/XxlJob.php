@@ -11,7 +11,7 @@ use Attribute;
 #[Attribute(Attribute::TARGET_METHOD | Attribute::IS_REPEATABLE)]
 class XxlJob
 {
-    public function __construct(public XxlJobCalleeEvent|array $event, public ?string $scope = null)
+    public function __construct(protected string $executor = '')
     {
     }
 }
