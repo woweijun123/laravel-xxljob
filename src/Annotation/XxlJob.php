@@ -10,7 +10,7 @@ use Attribute;
 #[Attribute(Attribute::TARGET_METHOD | Attribute::IS_REPEATABLE)]
 class XxlJob
 {
-    public function __construct(public string|array $executor, public ?string $scope = null)
+    public function __construct(public string|array $executor, public ?string $scope = 'xxljob')
     {
     }
 }
