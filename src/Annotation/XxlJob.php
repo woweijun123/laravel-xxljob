@@ -12,6 +12,5 @@ class XxlJob
 {
     public function __construct(public string|array $executor, public ?string $scope = null)
     {
-        $this->scope = $scope ?? static::class;
     }
 }
