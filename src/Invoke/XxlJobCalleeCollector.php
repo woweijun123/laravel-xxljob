@@ -38,7 +38,7 @@ class XxlJobCalleeCollector
             $mapper[$name] = $name;
         }
 
-        static::$container[$scope][$event] = [$callable, $mapper];
+        static::$container[$event][$scope] = [$callable, $mapper];
     }
 
     /**
@@ -52,7 +52,7 @@ class XxlJobCalleeCollector
         if (!$event) {
             return false;
         }
-        return isset(static::$container[$scope][$event]);
+        return isset(static::$container[$event][$scope]);
     }
 
     /**
@@ -66,7 +66,7 @@ class XxlJobCalleeCollector
         if (!$event) {
             return null;
         }
-        return static::$container[$scope][$event] ?? null;
+        return static::$container[$event][$scope] ?? null;
     }
 
     /**
