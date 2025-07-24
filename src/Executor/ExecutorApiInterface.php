@@ -9,7 +9,7 @@ use XxlJob\Requests\RunRequest;
 /**
  * 执行器接口
  */
-interface ExecutorInterface
+interface ExecutorApiInterface
 {
     /**
      * 心跳检测

@@ -13,11 +13,11 @@ use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
 use Throwable;
 use XxlJob\Annotation\XxlJob;
-use XxlJob\Dispatch\DispatcherInterfaceImpl;
-use XxlJob\Dispatch\DispatcherInterface;
+use XxlJob\Dispatch\DispatcherApi;
+use XxlJob\Dispatch\DispatcherApiInterface;
 use XxlJob\Enum\RedisKey;
-use XxlJob\Executor\ExecutorInterfaceImpl;
-use XxlJob\Executor\ExecutorInterface;
+use XxlJob\Executor\ExecutorApi;
+use XxlJob\Executor\ExecutorApiInterface;
 use XxlJob\Invoke\Reflection;
 use XxlJob\Invoke\XxlJobCalleeCollector;
 
@@ -29,8 +29,8 @@ class XxlJobProvider extends ServiceProvider
     {
         $this->mergeConfigFrom(__DIR__ . '/../Config/xxl_job.php', 'xxl_job');
         // 绑定接口到实现类
-        $this->app->bindIf(ExecutorInterface::class, ExecutorInterfaceImpl::class);
-        $this->app->bindIf(DispatcherInterface::class, DispatcherInterfaceImpl::class);
+        $this->app->bindIf(ExecutorApiInterface::class, ExecutorApi::class);
+        $this->app->bindIf(DispatcherApiInterface::class, DispatcherApi::class);
     }
 
     /**

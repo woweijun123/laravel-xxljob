@@ -3,15 +3,14 @@
 namespace XxlJob\Controller;
 
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
-use XxlJob\Executor\ExecutorInterface;
+use XxlJob\Executor\ExecutorApiInterface;
 use XxlJob\Requests\JobIdRequest;
 use XxlJob\Requests\LogRequest;
 use XxlJob\Requests\RunRequest;
 
 class XxlJobController extends AbstractController
 {
-    public function __construct(private readonly ExecutorInterface $executor)
+    public function __construct(private readonly ExecutorApiInterface $executor)
     {
     }
 

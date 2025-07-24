@@ -5,7 +5,7 @@ namespace XxlJob\Dispatch;
 /**
  * 调度中心接口
  */
-interface DispatcherInterface
+interface DispatcherApiInterface
 {
     /**
      * 任务回调
