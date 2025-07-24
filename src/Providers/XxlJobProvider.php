@@ -18,7 +18,7 @@ use XxlJob\Dispatch\DispatcherApiInterface;
 use XxlJob\Enum\RedisKey;
 use XxlJob\Executor\ExecutorApi;
 use XxlJob\Executor\ExecutorApiInterface;
-use XxlJob\Invoke\Reflection;
+use XxlJob\Invoke\XxlJobReflection;
 use XxlJob\Invoke\XxlJobCalleeCollector;
 
 class XxlJobProvider extends ServiceProvider
@@ -61,9 +61,8 @@ class XxlJobProvider extends ServiceProvider
         // 从缓存或通过扫描发现 XxlJob 方法
         $methods = $this->getBindings(self::getType(RedisKey::XxlJob), [$this, 'discoverXxlJobMethods']);
         foreach ($methods as $callable) {
-            [$callable, $event, $scope] = $callable;
             // 将发现的回调方法添加到回调收集器中
-            XxlJobCalleeCollector::addCallee($callable, is_string($event) ? unserialize($event) : $event, $scope);
+            XxlJobCalleeCollector::addCallee(...$callable);
         }
     }
 
@@ -86,7 +85,7 @@ class XxlJobProvider extends ServiceProvider
                 if (!class_exists($className)) {
                     continue;
                 }
-                $reflection = Reflection::reflectClass($className);
+                $reflection = XxlJobReflection::reflectClass($className);
                 // 遍历类的所有方法
                 foreach ($reflection->getMethods() as $method) {
                     // 遍历方法上所有 XxlJob 注解
@@ -94,7 +93,7 @@ class XxlJobProvider extends ServiceProvider
                         // 实例化注解对象
                         $callee = $attribute->newInstance();
                         // 收集回调信息：[类名, 方法名], 事件名, 作用域
-                        $bindings[] = [[$className, $method->getName()], serialize($callee->event), $callee->scope];
+                        $bindings[] = [[$className, $method->getName()], $callee->executor, $callee->scope];
                     }
                 }
             } catch (Throwable $e) {

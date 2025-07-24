@@ -10,8 +10,9 @@ use ReflectionClass;
 use ReflectionException;
 use ReflectionMethod;
 use ReflectionProperty;
+use XxlJob\Exception\GlueHandlerExecutionException;
 
-class Reflection
+class XxlJobReflection
 {
     /**
      * 缓存容器数据
@@ -21,17 +22,16 @@ class Reflection
 
     /**
      * 注解反射调用，根据 Callee 注解调用相关函数
-     * @param XxlJobCalleeEvent|array|null $event   事件枚举 或 [命名空间, 事件名] 格式的数组
-     * @param array                  $args    参数
-     * @param bool                   $strict  是否严格模式，为true时，空参数都会使用默认值
-     * @param mixed|null             $default 默认值，注解方法不存在时返回
-     * @param string|null            $scope   作用域
+     * @param string|array|null $event 事件枚举 或 [命名空间, 事件名] 格式的数组
+     * @param array $args 参数
+     * @param bool $strict 是否严格模式，为true时，空参数都会使用默认值
+     * @param string|null $scope 作用域
      * @return mixed
      */
-    public static function call(XxlJobCalleeEvent|array|null $event, array $args = [], bool $strict = false, mixed $default = null, ?string $scope = null): mixed
+    public static function call(string|array|null $event, array $args = [], bool $strict = false, ?string $scope = null): mixed
     {
         if (!$callable = XxlJobCalleeCollector::getCallee($event, $scope)) {
-            return value($default, $args);
+            throw new GlueHandlerExecutionException(sprintf('The definition of executor handler %s is invalid.', $event));
         }
 
         return self::invoke($callable[0], $args, $callable[1], $strict);
@@ -40,9 +40,9 @@ class Reflection
     /**
      * callable 方式反射调用
      * @param array $callable callable 调用数组
-     * @param array $args   参数
+     * @param array $args 参数
      * @param array $mapper 参数映射，格式 源参数 key => 转换后的目标参数 key
-     * @param bool  $strict 是否严格模式，为true时，空参数都会使用默认值
+     * @param bool $strict 是否严格模式，为true时，空参数都会使用默认值
      * @return mixed
      * @throws
      */
@@ -87,7 +87,7 @@ class Reflection
     {
         if (!isset(static::$container['class'][$className])) {
             if (!class_exists($className) && !interface_exists($className) && !trait_exists($className)) {
-                throw new InvalidArgumentException("Class {$className} not exist");
+                throw new InvalidArgumentException("Class $className not exist");
             }
             static::$container['class'][$className] = new ReflectionClass($className);
         }
@@ -99,7 +99,7 @@ class Reflection
      * 反射方法。
      * 获取并缓存 ReflectionMethod 实例。
      * @param string $className 方法所属的类或 trait 名。
-     * @param string $method    要反射的方法名。
+     * @param string $method 要反射的方法名。
      * @return ReflectionMethod ReflectionMethod 实例。
      * @throws InvalidArgumentException 如果类/trait 不存在。
      * @throws ReflectionException 如果方法不存在。
@@ -124,7 +124,7 @@ class Reflection
      * 反射属性。
      * 获取并缓存 ReflectionProperty 实例。
      * @param string $className 属性所属的类名。
-     * @param string $property  要反射的属性名。
+     * @param string $property 要反射的属性名。
      * @return ReflectionProperty ReflectionProperty 实例。
      * @throws InvalidArgumentException 如果类不存在。
      * @throws ReflectionException 如果属性不存在。
@@ -143,7 +143,7 @@ class Reflection
      * 反射方法参数。
      * 获取并缓存方法参数名及其默认值。
      * @param string $className 方法所属的类名。
-     * @param string $method    要反射参数的方法名。
+     * @param string $method 要反射参数的方法名。
      * @return array 参数名 => 默认值的关联数组。
      * @throws ReflectionException 如果方法不存在。
      */

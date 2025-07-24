@@ -3,7 +3,6 @@
 namespace XxlJob\Annotation;
 
 use Attribute;
-use XxlJob\Invoke\XxlJobCalleeEvent;
 
 /**
  * 注解调用
@@ -11,7 +10,8 @@ use XxlJob\Invoke\XxlJobCalleeEvent;
 #[Attribute(Attribute::TARGET_METHOD | Attribute::IS_REPEATABLE)]
 class XxlJob
 {
-    public function __construct(public XxlJobCalleeEvent|array $executor, public ?string $scope = null)
+    public function __construct(public string|array $executor, public ?string $scope = null)
     {
+        $this->scope = $scope ?? static::class;
     }
 }
