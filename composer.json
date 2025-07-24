@@ -3,7 +3,13 @@
   "description": "laravel-xxljob",
   "type": "library",
   "license": "MIT",
-  "authors": [],
+  "authors": [
+    {
+      "name": "riven",
+      "email": "1054487195@qq.com",
+      "homepage": "https://github.com/woweijun123/laravel-xxljob"
+    }
+  ],
   "require": {
     "php": ">=8.3",
     "laravel/framework": "^12.0",
