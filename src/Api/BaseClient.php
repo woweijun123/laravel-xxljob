@@ -118,7 +118,7 @@ class BaseClient
     {
         try {
              /* @var Client $client */
-            $client = app(Client::class)->create();
+            $client = app(Client::class);
             $response = $client->request($type, $uri, $option)->getBody();
         } catch (RequestException $e) {
             $exception = true;

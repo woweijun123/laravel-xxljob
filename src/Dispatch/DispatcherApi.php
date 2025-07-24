@@ -9,6 +9,10 @@ use XxlJob\Api\BaseClient;
  */
 class DispatcherApi extends BaseClient implements DispatcherApiInterface
 {
+    protected array $configExt = [
+        'decode'      => false,          // 是否解析返回数据
+    ];
+
     /**
      * 执行器注册
      * @param string $registryKey
@@ -17,16 +21,15 @@ class DispatcherApi extends BaseClient implements DispatcherApiInterface
      */
     public function registry(string $registryKey, string $registryValue): bool
     {
-        return $this->send(
-            [
-                'uri' => '${API_URI}/api/registry',
-            ],
+        $send = $this->send(
+            '/api/registry',
             [
                 'registryGroup' => 'EXECUTOR',
-                'registryKey' => $registryKey,
+                'registryKey'   => $registryKey,
                 'registryValue' => $registryValue,
             ]
         );
+        return (bool)$send;
     }
 
     public function callback()
