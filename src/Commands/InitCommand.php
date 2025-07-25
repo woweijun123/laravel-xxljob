@@ -3,6 +3,7 @@
 namespace XxlJob\Commands;
 
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Redis;
 use JetBrains\PhpStorm\NoReturn;
 use Throwable;
@@ -21,7 +22,7 @@ class InitCommand extends Command
 
     #[NoReturn] public function handle(): void
     {
-        dump(Redis::del(RedisKey::XxlJob->value));
+        dump(Cache::forget(RedisKey::XxlJob->value));
         $this->info('XXL-JOB 清除缓存 成功');
         try {
             $this->dispatcherApi->registry('xxl-job-executor-sample', 'http://127.0.0.1');
