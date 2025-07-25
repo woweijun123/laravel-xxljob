@@ -10,15 +10,15 @@ interface DispatcherApiInterface
     /**
      * 任务回调
      */
-    public function callback();
+    public function callback(): mixed;
 
     /**
      * 执行器注册
      */
-    public function registry(string $registryKey, string $registryValue);
+    public function registry(string $registryKey, string $registryValue): mixed;
 
     /**
      * 执行器注册摘除
      */
-    public function registryRemove(string $registryKey, string $registryValue);
+    public function registryRemove(string $registryKey, string $registryValue): mixed;
 }

@@ -17,11 +17,11 @@ class DispatcherApi extends BaseClient implements DispatcherApiInterface
      * 执行器注册
      * @param string $registryKey
      * @param string $registryValue
-     * @return bool
+     * @return mixed
      */
-    public function registry(string $registryKey, string $registryValue): bool
+    public function registry(string $registryKey, string $registryValue): mixed
     {
-        $send = $this->send(
+        return $this->send(
             '/api/registry',
             [
                 'registryGroup' => 'EXECUTOR',
@@ -29,14 +29,13 @@ class DispatcherApi extends BaseClient implements DispatcherApiInterface
                 'registryValue' => $registryValue,
             ]
         );
-        return (bool)$send;
     }
 
-    public function callback()
+    public function callback(): mixed
     {
     }
 
-    public function registryRemove(string $registryKey, string $registryValue)
+    public function registryRemove(string $registryKey, string $registryValue): mixed
     {
     }
 }
