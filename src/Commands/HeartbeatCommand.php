@@ -24,6 +24,9 @@ class HeartbeatCommand extends Command
     public function handle(): void
     {
         $this->keepalive();
+        while (true) {
+            sleep(10);
+        }
     }
 
     /**
