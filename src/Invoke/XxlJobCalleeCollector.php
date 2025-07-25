@@ -4,6 +4,7 @@ namespace XxlJob\Invoke;
 
 use ReflectionException;
 use XxlJob\Annotation\XxlJobMapper;
+use XxlJob\Enum\Scope;
 
 class XxlJobCalleeCollector
 {
@@ -11,9 +12,9 @@ class XxlJobCalleeCollector
 
     /**
      * 添加被调用方法到容器
-     * @param array             $callable [类名, 方法名]
-     * @param string|array $event    事件枚举 或 [命名空间, 事件名] 格式的数组
-     * @param string|null       $scope    作用域
+     * @param array $callable [类名, 方法名]
+     * @param string|array $event 事件枚举 或 [命名空间, 事件名] 格式的数组
+     * @param string|null $scope 作用域
      * @return void
      */
     public static function addCallee(array $callable, string|array $event, ?string $scope = null): void
@@ -44,7 +45,7 @@ class XxlJobCalleeCollector
     /**
      * 检查是否存在对应的调用方法
      * @param string|array|null $event 事件枚举 或 [命名空间, 事件名] 格式的数组
-     * @param string|null            $scope 作用域
+     * @param string|null $scope 作用域
      * @return bool
      */
     public static function hasCallee(string|array|null $event, ?string $scope = null): bool
@@ -58,7 +59,7 @@ class XxlJobCalleeCollector
     /**
      * 获取调用方法及参数映射
      * @param string|array|null $event 事件枚举 或 [命名空间, 事件名] 格式的数组
-     * @param string|null            $scope 作用域
+     * @param string|null $scope 作用域
      * @return array|null
      */
     public static function getCallee(string|array|null $event, ?string $scope = null): ?array
@@ -66,7 +67,7 @@ class XxlJobCalleeCollector
         if (!$event) {
             return null;
         }
-        return static::$container[$event][$scope] ?? null;
+        return static::$container[$event][$scope ?: Scope::XxlJob->value] ?? null;
     }
 
     /**
