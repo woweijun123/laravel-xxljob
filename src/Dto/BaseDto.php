@@ -3,7 +3,6 @@
 namespace XxlJob\Dto;
 
 use ArrayAccess;
-use Illuminate\Database\Eloquent\Model;
 
 abstract class BaseDto implements ArrayAccess
 {

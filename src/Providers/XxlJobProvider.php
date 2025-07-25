@@ -13,6 +13,7 @@ use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
 use Throwable;
 use XxlJob\Annotation\XxlJob;
+use XxlJob\Commands\InitCommand;
 use XxlJob\Dispatch\DispatcherApi;
 use XxlJob\Dispatch\DispatcherApiInterface;
 use XxlJob\Enum\RedisKey;
@@ -58,6 +59,10 @@ class XxlJobProvider extends ServiceProvider
      */
     protected function registerXxlJobMethod(): void
     {
+        // 注册 Artisan 命令
+        if ($this->app->runningInConsole()) {
+            $this->commands([InitCommand::class]);
+        }
         // 从缓存或通过扫描发现 XxlJob 方法
         $methods = $this->getBindings(self::getType(RedisKey::XxlJob), [$this, 'discoverXxlJobMethods']);
         foreach ($methods as $callable) {
@@ -131,7 +136,7 @@ class XxlJobProvider extends ServiceProvider
         // 如果缓存不存在或读取失败，则通过回调函数发现绑定
         $bindings = $discoverCallback();
 
-        // 将发现的绑定结果永久存入缓存
+        // 将发现的绑定结果存入缓存
         $this->getCache()->put($type, $bindings, $this->cacheTime);
         return $bindings;
     }
