@@ -10,11 +10,11 @@ abstract class AbstractController extends Controller
     /**
      * @desc 成功返回
      * @param array $data
-     * @param string $msg
+     * @param string|null $msg
      * @param int $code
      * @return JsonResponse
      */
-    public function success(array $data = [], string $msg = 'success', int $code = 200): JsonResponse
+    public function success(array $data = [], string|null $msg = null, int $code = 200): JsonResponse
     {
         return $this->jsonResponse($data, $msg, $code);
     }
@@ -22,16 +22,16 @@ abstract class AbstractController extends Controller
     /**
      * @desc Json响应
      * @param array $data
-     * @param string $msg
+     * @param string|null $msg
      * @param int $code
      * @return JsonResponse
      */
-    public function jsonResponse(array $data = [], string $msg = '', int $code = 0): JsonResponse
+    public function jsonResponse(array $data = [], string|null $msg = null, int $code = 0): JsonResponse
     {
-        return new JsonResponse([
-            'code' => $code,
-            'msg' => $msg,
-            'content' => $data,
-        ], $code);
+        $return = ['code' => $code, 'msg' => $msg];
+        if ($data) {
+            $return['content'] = $data;
+        }
+        return new JsonResponse($return, $code);
     }
 }
