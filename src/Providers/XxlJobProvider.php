@@ -13,6 +13,7 @@ use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
 use Throwable;
 use XxlJob\Annotation\XxlJob;
+use XxlJob\Commands\HeartbeatCommand;
 use XxlJob\Commands\InitCommand;
 use XxlJob\Dispatch\DispatcherApi;
 use XxlJob\Dispatch\DispatcherApiInterface;
@@ -70,7 +71,7 @@ class XxlJobProvider extends ServiceProvider
     {
         // 注册 Artisan 命令
         if ($this->app->runningInConsole()) {
-            $this->commands([InitCommand::class]);
+            $this->commands([InitCommand::class, HeartbeatCommand::class]);
         }
         // 从缓存或通过扫描发现 XxlJob 方法
         $methods = $this->getBindings(self::getType(RedisKey::XxlJob), [$this, 'discoverXxlJobMethods']);
