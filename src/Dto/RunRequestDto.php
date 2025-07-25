@@ -2,7 +2,7 @@
 
 namespace XxlJob\Dto;
 
-class RunRequestDto
+class RunRequestDto extends BaseDto
 {
     /**
      * @param int $jobId 任务ID
@@ -33,5 +33,6 @@ class RunRequestDto
         public int     $broadcastTotal = 0
     )
     {
+        parent::__construct();
     }
 }

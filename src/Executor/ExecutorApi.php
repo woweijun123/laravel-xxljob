@@ -35,7 +35,7 @@ class ExecutorApi implements ExecutorApiInterface
      */
     public function run(RunRequest $request): void
     {
-        ExecutorJob::dispatch(new RunRequestDto(...$request->toArray()));
+        ExecutorJob::dispatch(RunRequestDto::make(...$request->toArray()));
     }
 
     /**
