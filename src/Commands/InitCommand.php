@@ -22,7 +22,8 @@ class InitCommand extends Command
 
     #[NoReturn] public function handle(): void
     {
-        dump(Cache::forget(RedisKey::XxlJob->value));
+        $appName = env('APP_NAME');
+        dump(Cache::forget(RedisKey::XxlJob->spr($appName)));
         $this->info('XXL-JOB 清除缓存 成功');
         try {
             $this->dispatcherApi->registry('xxl-job-executor-sample', 'http://127.0.0.1');
