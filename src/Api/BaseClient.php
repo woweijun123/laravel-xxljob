@@ -40,7 +40,7 @@ class BaseClient
         if (is_string($setting)) {
             $setting = ['method' => $setting];
         }
-        $accessToken = config('access_token');
+        $accessToken = config('xxljob.access_token');
         if ($accessToken) {
             Arr::set($setting, 'headers.XXL-JOB-ACCESS-TOKEN', $accessToken);
         }

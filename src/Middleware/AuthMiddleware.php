@@ -12,7 +12,7 @@ use XxlJob\Exception\InvalidTokenException;
 
 class AuthMiddleware {
     public function handle(Request $request, Closure $next): Response {
-        $configToken = config('access_token');
+        $configToken = config('xxljob.access_token');
         if (!$configToken) {
             Log::error('Please set the access token of xxljob first');
             throw new InvalidTokenException('Please set the access token of xxljob first');
