@@ -8,6 +8,7 @@ use JetBrains\PhpStorm\NoReturn;
 use Throwable;
 use XxlJob\Dispatch\DispatcherApi;
 use XxlJob\Enum\RedisKey;
+use XxlJob\Invoke\XxlJobCalleeCollector;
 
 class InitCommand extends Command
 {
@@ -25,7 +26,10 @@ class InitCommand extends Command
         dump(Cache::forget(RedisKey::XxlJob->spr($appName)));
         $this->info('XXL-JOB 清除缓存 成功');
         try {
-            $this->dispatcherApi->registry('xxl-job-executor-sample', 'http://127.0.0.1');
+            $container = XxlJobCalleeCollector::getContainer();
+            foreach ($container as $executor) {
+                $this->dispatcherApi->registry($executor, config('xxljob.executor_uri'));
+            }
             $this->info('XXL-JOB 执行器注册 成功');
         } catch (Throwable $e) {
             $this->error('XXL-JOB 执行器注册 失败：' . $e->getMessage());

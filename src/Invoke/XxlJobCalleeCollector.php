@@ -11,6 +11,15 @@ class XxlJobCalleeCollector
     protected static array $container = [];
 
     /**
+     * 获取容器数据
+     * @return array
+     */
+    public static function getContainer(): array
+    {
+        return self::$container;
+    }
+
+    /**
      * 添加被调用方法到容器
      * @param array $callable [类名, 方法名]
      * @param string|array $event 事件枚举 或 [命名空间, 事件名] 格式的数组
