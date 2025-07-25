@@ -9,7 +9,7 @@ use Illuminate\Support\Arr;
 
 class BaseClient
 {
-    const string API_URI = '';
+    public string $apiUri = '';
 
     /**
      * @var array 基本配置
@@ -44,7 +44,7 @@ class BaseClient
         if ($accessToken) {
             Arr::set($setting, 'headers.XXL-JOB-ACCESS-TOKEN', $accessToken);
         }
-        return array_replace_recursive($this->config, config('xxljob'), $this->configExt, $setting);
+        return array_replace_recursive($this->config, $this->configExt, $setting);
     }
 
     /**
@@ -117,7 +117,7 @@ class BaseClient
     protected function request(string $type, string $uri = '', array $option = [], ?bool &$exception = false): string
     {
         try {
-             /* @var Client $client */
+            /* @var Client $client */
             $client = app(Client::class);
             $response = $client->request($type, $uri, $option)->getBody();
         } catch (RequestException $e) {
@@ -145,7 +145,7 @@ class BaseClient
         return preg_replace_callback('/\${([^{}]*)}/', function ($match) use ($conf) {
             $match = $match[1];
             return match ($match) {
-                'API_URI' => static::API_URI,
+                'API_URI' => $this->apiUri,
                 isset($conf[$match]) ? $match : '' => $conf[$match],
                 default => (function () use ($conf, $match) {
                     $key = str_replace(['.', '#'], ['/', '.'], $match);

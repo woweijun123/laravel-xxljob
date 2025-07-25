@@ -13,6 +13,12 @@ class DispatcherApi extends BaseClient implements DispatcherApiInterface
         'decode' => false,          // 是否解析返回数据
     ];
 
+    public function __construct()
+    {
+        $this->apiUri = config('xxljob.uri');
+    }
+
+
     /**
      * 执行器注册
      * @param string $registryKey
