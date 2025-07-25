@@ -14,23 +14,6 @@ abstract class BaseDto implements ArrayAccess
         $this->container = get_object_vars($this);
     }
 
-    /**
-     * 静态获取Struct
-     */
-    public static function make(Model|null|array $form): static
-    {
-        if (empty($form)) {
-            return new static();
-        }
-        if ($form instanceof Model) {
-            $form = $form->toArray();
-        }
-        // 过滤不存在的属性
-        $form = array_intersect_key($form, get_class_vars(static::class));
-        return new static(...$form);
-    }
-
-
     public function offsetGet($offset): mixed
     {
         return $this->container[$offset] ?? null;
