@@ -2,6 +2,7 @@
 
 namespace XxlJob\Executor;
 
+use XxlJob\Dto\RunRequestDto;
 use XxlJob\Jobs\ExecutorJob;
 use XxlJob\Requests\LogRequest;
 use XxlJob\Requests\RunRequest;
@@ -34,7 +35,7 @@ class ExecutorApi implements ExecutorApiInterface
      */
     public function run(RunRequest $request): void
     {
-        ExecutorJob::dispatch($request);
+        ExecutorJob::dispatch(new RunRequestDto(...$request->toArray()));
     }
 
     /**
