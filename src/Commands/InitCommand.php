@@ -26,8 +26,8 @@ class InitCommand extends Command
         dump(Cache::forget(RedisKey::XxlJob->spr($appName)));
         $this->info('XXL-JOB 清除缓存 成功');
         try {
-            $container = XxlJobCalleeCollector::getContainer();
-            foreach ($container as $executor) {
+            $executors = array_keys(XxlJobCalleeCollector::getContainer());
+            foreach ($executors as $executor) {
                 $this->dispatcherApi->registry($executor, config('xxljob.executor_uri'));
             }
             $this->info('XXL-JOB 执行器注册 成功');
