@@ -26,9 +26,9 @@ interface ExecutorApiInterface
     /**
      * 触发任务
      * @param RunRequest $request
-     * @return array
+     * @return void
      */
-    public function run(RunRequest $request): array;
+    public function run(RunRequest $request): void;
 
     /**
      * 终止任务

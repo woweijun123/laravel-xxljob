@@ -41,7 +41,8 @@ class XxlJobController extends AbstractController
      */
     public function run(RunRequest $request): JsonResponse
     {
-        return $this->success($this->executor->run($request));
+        $this->executor->run($request);
+        return $this->success();
     }
 
     /**

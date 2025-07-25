@@ -2,8 +2,7 @@
 
 namespace XxlJob\Executor;
 
-use App\Enums\XxlJob\XxlJobAction;
-use XxlJob\Invoke\XxlJobReflection;
+use XxlJob\Jobs\ExecutorJob;
 use XxlJob\Requests\LogRequest;
 use XxlJob\Requests\RunRequest;
 use XxlJob\Responses\LogResponse;
@@ -31,11 +30,11 @@ class ExecutorApi implements ExecutorApiInterface
     /**
      * 触发任务执行
      * @param RunRequest $request
-     * @return array
+     * @return void
      */
-    public function run(RunRequest $request): array
+    public function run(RunRequest $request): void
     {
-        return XxlJobReflection::call(event: $request->executorHandler, args: compact('request'));
+        ExecutorJob::dispatch($request);
     }
 
     /**
