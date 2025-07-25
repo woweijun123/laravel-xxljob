@@ -44,7 +44,7 @@ class BaseClient
         if ($accessToken) {
             Arr::set($setting, 'headers.XXL-JOB-ACCESS-TOKEN', $accessToken);
         }
-        return array_replace_recursive($this->config, config('xxl_job'), $this->configExt, $setting);
+        return array_replace_recursive($this->config, config('xxljob'), $this->configExt, $setting);
     }
 
     /**

@@ -19,8 +19,9 @@ use XxlJob\Dispatch\DispatcherApiInterface;
 use XxlJob\Enum\RedisKey;
 use XxlJob\Executor\ExecutorApi;
 use XxlJob\Executor\ExecutorApiInterface;
-use XxlJob\Invoke\XxlJobReflection;
 use XxlJob\Invoke\XxlJobCalleeCollector;
+use XxlJob\Invoke\XxlJobReflection;
+use XxlJob\Middleware\AuthMiddleware;
 
 class XxlJobProvider extends ServiceProvider
 {
@@ -28,7 +29,7 @@ class XxlJobProvider extends ServiceProvider
 
     public function register(): void
     {
-        $this->mergeConfigFrom(__DIR__ . '/../Config/xxl_job.php', 'xxl_job');
+        $this->mergeConfigFrom(__DIR__ . '/../Config/xxljob.php', 'xxljob');
         // 绑定接口到实现类
         $this->app->bindIf(ExecutorApiInterface::class, ExecutorApi::class);
         $this->app->bindIf(DispatcherApiInterface::class, DispatcherApi::class);
@@ -41,15 +42,23 @@ class XxlJobProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        $this->publishes([__DIR__ . '/../Config/xxl_job.php' => config_path('xxl_job.php')]);
-        // 自动加载路由文件
-        if (file_exists($routesFile = __DIR__ . '/../Route/xxl-job.php')) {
-            Route::group(['namespace' => 'XxlJob\Controller'], function () use ($routesFile) {
-                require_once $routesFile;
-            });
-        }
+        $this->publishes([__DIR__ . '/../Config/xxljob.php' => config_path('xxljob.php')]);
+        // 注册路由
+        $this->registerRoutes();
         // 注册通过 @XxlJob 注解发现的回调方法
         $this->registerXxlJobMethod();
+    }
+
+    /**
+     * 注册路由
+     */
+    protected function registerRoutes(): void
+    {
+        if (file_exists($routesFile = __DIR__ . '/../Route/xxl-job.php')) {
+            Route::middleware(AuthMiddleware::class)
+                ->namespace('XxlJob\Controller')
+                ->group($routesFile);
+        }
     }
 
     /**
