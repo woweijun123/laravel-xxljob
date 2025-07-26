@@ -30,6 +30,6 @@ class ExecutorJob implements ShouldQueue
         if (!empty($call) && is_array($call)) {
             $handleMsg = json_encode($call, 256);
         }
-        app(DispatcherApi::class)->callback($this->request->logId, $this->request->logDateTime, $handleMsg);
+        app(DispatcherApi::class)->callback($this->request->logId, $this->request->logDateTime, handleMsg: $handleMsg);
     }
 }

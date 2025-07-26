@@ -2,6 +2,7 @@
 
 namespace XxlJob\Dispatch;
 
+use Illuminate\Support\Facades\Log;
 use XxlJob\Api\BaseClient;
 
 /**
@@ -47,15 +48,18 @@ class DispatcherApi extends BaseClient implements DispatcherApiInterface
      */
     public function callback(string $logId, string $logDateTim, int $handleCode = 200, string $handleMsg = null): mixed
     {
-        return $this->send(
-            '/api/callback',
+        $postData = [
             [
                 'logId' => $logId,
                 'logDateTim' => $logDateTim,
                 'handleCode' => $handleCode,
                 'handleMsg' => $handleMsg,
-            ]
-        );
+            ],
+        ];
+        Log::info('xxl-job-request', [$postData]);
+        $callback = $this->send('/api/callback', $postData);
+        Log::info('xxl-job-callback', [$callback]);
+        return $callback;
     }
 
     /**
