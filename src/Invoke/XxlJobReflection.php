@@ -152,10 +152,11 @@ class XxlJobReflection
         $key = $className . '::' . $method;
         if (!isset(static::$container['parameter'][$key])) {
             $reflectionParameters = static::reflectMethod($className, $method)->getParameters();
-            static::$container['parameter'][$key] = array_reduce($reflectionParameters, function ($carry, $param) {
+            $arrayReduce = array_reduce($reflectionParameters, function ($carry, $param) {
                 $carry[$param->getName()] = $param->isDefaultValueAvailable() ? $param->getDefaultValue() : null;
                 return $carry;
             });
+            static::$container['parameter'][$key] = $arrayReduce ?? [];
         }
         return static::$container['parameter'][$key];
     }
