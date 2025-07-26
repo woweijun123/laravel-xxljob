@@ -7,6 +7,7 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Foundation\Queue\Queueable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
+use XxlJob\Dispatch\DispatcherApi;
 use XxlJob\Dto\RunRequestDto;
 use XxlJob\Invoke\XxlJobReflection;
 
@@ -24,6 +25,11 @@ class ExecutorJob implements ShouldQueue
 
     public function handle(): void
     {
-        XxlJobReflection::call(event: $this->request->executorHandler, args: ['request' => $this->request]);
+        $handleMsg = 'success';
+        $call = XxlJobReflection::call(event: $this->request->executorHandler, args: ['request' => $this->request]);
+        if (!empty($call) && is_array($call)) {
+            $handleMsg = json_encode($call, 256);
+        }
+        app(DispatcherApi::class)->callback($this->request->logId, $this->request->logDateTime, $handleMsg);
     }
 }

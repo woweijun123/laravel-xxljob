@@ -37,11 +37,35 @@ class DispatcherApi extends BaseClient implements DispatcherApiInterface
         );
     }
 
-    public function callback(): mixed
+    /**
+     * 任务回调
+     * @param string $logId
+     * @param string $logDateTim
+     * @param int $handleCode
+     * @param string|null $handleMsg
+     * @return mixed
+     */
+    public function callback(string $logId, string $logDateTim, int $handleCode = 200, string $handleMsg = null): mixed
     {
+        return $this->send(
+            '/api/callback',
+            [
+                'logId' => $logId,
+                'logDateTim' => $logDateTim,
+                'handleCode' => $handleCode,
+                'handleMsg' => $handleMsg,
+            ]
+        );
     }
 
+    /**
+     * 执行器注册摘除
+     * @param string $registryKey
+     * @param string $registryValue
+     * @return mixed
+     */
     public function registryRemove(string $registryKey, string $registryValue): mixed
     {
+        // 暂未实现
     }
 }

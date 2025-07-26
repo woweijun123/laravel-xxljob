@@ -10,7 +10,7 @@ interface DispatcherApiInterface
     /**
      * 任务回调
      */
-    public function callback(): mixed;
+    public function callback(string $logId, string $logDateTim, int $handleCode = 200, string $handleMsg = null): mixed;
 
     /**
      * 执行器注册
