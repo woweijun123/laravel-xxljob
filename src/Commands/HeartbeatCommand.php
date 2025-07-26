@@ -6,7 +6,6 @@ use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Log;
 use Throwable;
 use XxlJob\Dispatch\DispatcherApi;
-use XxlJob\Invoke\XxlJobCalleeCollector;
 
 class HeartbeatCommand extends Command
 {
@@ -40,10 +39,7 @@ class HeartbeatCommand extends Command
     {
         return function () {
             try {
-                $executors = array_keys(XxlJobCalleeCollector::getContainer());
-                foreach ($executors as $executor) {
-                    $this->dispatcherApi->registry($executor, config('xxljob.executor_uri'));
-                }
+                $this->dispatcherApi->registry(config('xxljob.app_name'), config('xxljob.executor_uri'));
                 return true;
             } catch (Throwable $e) {
                 Log::error('XXL-JOB 执行器心跳维持 失败：' . $e->getMessage());
