@@ -13,5 +13,5 @@ return [
     // 对应的 AppName
     'app_name' => env('XXL_JOB_APP_NAME', 'xxl-job-demo'),
     // 访问凭证
-    'access_token' => env('XXL_JOB_ACCESS_TOKEN', 'xxljob'),
+    'access_token' => env('XXL_JOB_ACCESS_TOKEN', ''),
 ];
