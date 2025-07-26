@@ -12,13 +12,16 @@ class HeartbeatCommand extends Command
 {
     protected $signature = 'xxljob:heartbeat';
     protected $description = '发送心跳到XXL-JOB';
-    protected int $maxRetries = 3; // 最大重试次数
-    protected int $retryDelay = 10; // 重试间隔「秒」
-    private int $keepalive = 30; // 心跳时间「秒」
+    protected int $maxRetries; // 最大重试次数
+    protected int $retryDelay; // 重试间隔「秒」
+    private int $heartbeat; // 心跳时间「秒」
 
     public function __construct(protected DispatcherApi $dispatcherApi)
     {
         parent::__construct();
+        $this->heartbeat = config('xxljob.heartbeat');
+        $this->maxRetries = config('xxljob.max_retries');
+        $this->retryDelay = config('xxljob.retry_delay');
     }
 
     public function handle(): void
@@ -66,8 +69,8 @@ class HeartbeatCommand extends Command
             } catch (Throwable $e) {
                 Log::error('XXL-JOB 执行器心跳维持 失败：' . $e->getMessage());
             }
-            pcntl_alarm($this->keepalive);
+            pcntl_alarm($this->heartbeat);
         });
-        pcntl_alarm($this->keepalive);
+        pcntl_alarm($this->heartbeat);
     }
 }
