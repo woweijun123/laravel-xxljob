@@ -4,6 +4,5 @@ namespace XxlJob\Enum;
 
 enum Scope: string
 {
-    use SprintfVal;
     case XxlJob = 'xxljob';
 }

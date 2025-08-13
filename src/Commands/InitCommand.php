@@ -3,9 +3,8 @@
 namespace XxlJob\Commands;
 
 use Illuminate\Console\Command;
-use Illuminate\Support\Facades\Cache;
 use JetBrains\PhpStorm\NoReturn;
-use XxlJob\Enum\RedisKey;
+use XxlJob\Providers\XxlJobProvider;
 
 class InitCommand extends Command
 {
@@ -14,8 +13,9 @@ class InitCommand extends Command
 
     #[NoReturn] public function handle(): void
     {
-        $appName = env('APP_NAME');
-        dump(Cache::forget(RedisKey::XxlJob->spr($appName)));
+        if (is_file($xxljobPath = XxlJobProvider::getCachedPath('cache/xxljob.php'))) {
+            @unlink($xxljobPath);
+        }
         $this->info('XXL-JOB 清除缓存 成功');
     }
 }
