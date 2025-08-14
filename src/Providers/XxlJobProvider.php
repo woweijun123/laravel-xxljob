@@ -124,7 +124,7 @@ class XxlJobProvider extends ServiceProvider
     {
         // 如果不是本地环境，尝试从缓存读取
         if (!app()->environment('local') && is_file($cacheFilePath)) {
-            return require_once $cacheFilePath;
+            return include $cacheFilePath;
         }
         // 如果缓存不存在或读取失败，则通过回调函数发现绑定
         $bindings = $discoverCallback();
